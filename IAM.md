@@ -154,6 +154,8 @@ aws sts get-caller-identity --query Arn --output text --profile EKSClusterAdminA
 ```
 account=$(aws sts get-caller-identity --query Account --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx)
 rolearn="arn:aws:iam::${account}:role/EKSClusterCreator"
+echo $account
+echo $rolearn
 ```
 ```
 creds=$(aws sts assume-role --role-arn ${rolearn} \
