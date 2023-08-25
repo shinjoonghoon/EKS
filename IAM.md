@@ -144,7 +144,7 @@ To use this profile, specify the profile name using --profile, as shown:
 aws s3 ls --profile eks-admin
 An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
 ```
-* assume-role
+* assume-role: EKSClusterCreator
 ```
 aws sts get-caller-identity
 ```
