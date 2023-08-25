@@ -3,8 +3,8 @@
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/sec-group-reqs.html
 
 ```
-vpcid=vpc-0e5dcdc77bf5fcc86
-region=$(aws configure get region  )
+vpcid=vpc-xxxxxxxxxxxxxxxxx
+region=$(aws configure get region)
 echo $vpcid
 echo $region
 
@@ -16,6 +16,7 @@ aws ec2 create-security-group --description "Security group of Payments Cluster"
 ```
 
 * authorize-security-group-ingress
+>source-group
 ```
 aws ec2 authorize-security-group-ingress \
     --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
@@ -25,6 +26,7 @@ aws ec2 authorize-security-group-ingress \
 
 ```
 * authorize-security-group-ingress
+>cidr 10.0.0.0/8
 ```
 aws ec2 authorize-security-group-ingress \
     --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
@@ -35,51 +37,15 @@ aws ec2 authorize-security-group-ingress \
 
 ```
 
-# Creating an Amazon EKS cluster
-* https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/create-cluster.html
-* describe-security-groups
-```
-aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text
-```
-
-* describe-subnets
-```
-aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text
-```
-
-* ClusterConfig
-* https://eksctl.io/usage/schema/
-```
-cat << EOF > cluster-payments.yaml
-apiVersion: eksctl.io/v1alpha5
-kind: ClusterConfig
-metadata:
-  name: payments
-  region: ap-northeast-2
-  version: "1.27"
-privateCluster:
-  enabled: true
-  skipEndpointCreation: true
-vpc:
-#eks-cluster-sg-[Cluster Name]
-  securityGroup: sg-0eb70e4b38716fba7
-  subnets:
-    private:
-      EKS-subnet-private2-ap-northeast-2a:
-        id: "subnet-00936ff6a3197cfaf"
-      EKS-subnet-private5-ap-northeast-2c:
-        id: "subnet-0be3341072b0df062"
-EOF
-
-```
-
+# EKS using SSO
 * get-caller-identity
 ```
 aws sts get-caller-identity
 ```
 
-* AWS Organizations
+* AWS Organizations/management account
 * IAM Identity Center(SSO)/Permission sets/EKSClusterAdminAccess/inline policy
+>EKSClusterAdminAccess
 ```
 {
     "Version": "2012-10-17",
@@ -97,9 +63,11 @@ aws sts get-caller-identity
     ]
 }
 ```
-
-* IAM/Identity providers/AWSSO_xxxxxx_DO_NOT_DELETE
-* IAM/Roles/AWSReservedSSO_EKSClusterAdminAccess_xxxxxx
+* AWS Organizations/OU account
+* IAM/Identity providers/
+>AWSSO_xxxxxx_DO_NOT_DELETE
+* IAM/Roles/
+>AWSReservedSSO_EKSClusterAdminAccess_xxxxxx
 * Trusted entities
 ```
 {
@@ -143,6 +111,7 @@ aws sts get-caller-identity
 ```
 
 * IAM/Roles/EKSClusterCreator
+>EKSClusterCreator
 ```
 {
     "Version": "2012-10-17",
@@ -173,6 +142,7 @@ aws sts get-caller-identity
                 "iam:*",
                 "cloudformation:*",
                 "ec2:*",
+                "vpc:*",
                 "autoscaling:*",
                 "ssm:*",
                 "kms:*",
@@ -183,7 +153,7 @@ aws sts get-caller-identity
     ]
 }
 ```
-
+* sso login
 ```
 aws configure sso
 ```
@@ -213,6 +183,7 @@ To use this profile, specify the profile name using --profile, as shown:
 aws s3 ls --profile EKSClusterAdminAccess-xxxxxxxxxxxx
 An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
 ```
+* assume-role
 ```
 aws sts get-caller-identity
 ```
@@ -246,6 +217,44 @@ aws sts get-caller-identity
 export AWS_PROFILE=k8sAdmin
 echo ${AWS_PROFILE}
 unset AWS_PROFILE
+
+```
+
+# Creating an Amazon EKS cluster
+* https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/create-cluster.html
+* describe-security-groups
+```
+aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text
+```
+
+* describe-subnets
+```
+aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text
+```
+
+* ClusterConfig
+* https://eksctl.io/usage/schema/
+```
+cat << EOF > cluster-payments.yaml
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: payments
+  region: ap-northeast-2
+  version: "1.27"
+privateCluster:
+  enabled: true
+  skipEndpointCreation: true
+vpc:
+#eks-cluster-sg-[Cluster Name]
+  securityGroup: sg-0eb70e4b38716fba7
+  subnets:
+    private:
+      EKS-subnet-private2-ap-northeast-2a:
+        id: "subnet-00936ff6a3197cfaf"
+      EKS-subnet-private5-ap-northeast-2c:
+        id: "subnet-0be3341072b0df062"
+EOF
 
 ```
 
