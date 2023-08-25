@@ -94,6 +94,12 @@ eksctl create cluster -f cluster-payments.yaml
 ```
 kubectl config view
 ```
+```
+aws sts get-caller-identity
+```
+```
+eksctl get cluster --region ap-northeast-2
+```
 
 ```
 ssorole=$(aws sts get-caller-identity --query Arn --output text --profile eks-admin | cut -d/ -f2)
@@ -105,22 +111,21 @@ echo $cluster
 ```
 
 ```
+kubectl get cm -n kube-system aws-auth -o yaml
+```
+
+```
 eksctl create iamidentitymapping \
  --cluster ${cluster} \
  --arn arn:aws:iam::${account}:role/${ssorole} \
  --username cluster-admin \
- --group system:masters
+ --group system:masters \
  --region ap-northeast-2
 
 ```
 
 ```
 kubectl get cm -n kube-system aws-auth -o yaml
-```
-
-```
-export KUBECONFIG=~/.kube/config-ekssso-EKSClusterAdmin 
-
 ```
 
 ```
@@ -144,4 +149,9 @@ kubectl get nodes
 eksctl delete cluster --name payments --region ap-northeast-2
 ```
 
+---
 
+```
+export KUBECONFIG=~/.kube/config-ekssso-EKSClusterAdmin 
+
+```
