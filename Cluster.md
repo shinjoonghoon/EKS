@@ -137,7 +137,7 @@ unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 aws eks update-kubeconfig --name ${cluster} \
  --profile eks-admin
 ```
->AccessDeniedException
+>AccessDeniedException: eks:DescribeCluster
 
 ```
 kubectl get nodes
