@@ -137,11 +137,11 @@ The only role available to you is: EKSClusterAdminAccess
 Using the role name "EKSClusterAdminAccess"
 CLI default client Region [ap-northeast-2]:
 CLI default output format [None]: json
-CLI profile name [EKSClusterAdminAccess-xxxxxxxxxxxx]:
+CLI profile name [EKSClusterAdminAccess-xxxxxxxxxxxx]: eks-admin
 
 To use this profile, specify the profile name using --profile, as shown:
 
-aws s3 ls --profile EKSClusterAdminAccess-xxxxxxxxxxxx
+aws s3 ls --profile eks-admin
 An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
 ```
 * assume-role
@@ -149,10 +149,10 @@ An error occurred (AccessDenied) when calling the ListBuckets operation: Access 
 aws sts get-caller-identity
 ```
 ```
-aws sts get-caller-identity --query Arn --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx
+aws sts get-caller-identity --query Arn --output text --profile eks-admin
 ```
 ```
-account=$(aws sts get-caller-identity --query Account --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx)
+account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
 rolearn="arn:aws:iam::${account}:role/EKSClusterCreator"
 echo $account
 echo $rolearn
@@ -161,11 +161,11 @@ echo $rolearn
 creds=$(aws sts assume-role --role-arn ${rolearn} \
    --role-session-name "create-eks-cluster" \
    --query 'Credentials.[{AWS_ACCESS_KEY_ID: AccessKeyId}, {AWS_SESSION_TOKEN: SessionToken}, {AWS_SECRET_ACCESS_KEY: SecretAccessKey}]' \
-   --profile EKSClusterAdminAccess-xxxxxxxxxxxx | jq -r '.[]' | sed 's/{//;s/}//;s/"//g;s/ AWS_ACCESS_KEY_ID: /export AWS_ACCESS_KEY_ID=/;s/ AWS_SESSION_TOKEN: /export AWS_SESSION_TOKEN=/;s/ AWS_SECRET_ACCESS_KEY: /export AWS_SECRET_ACCESS_KEY=/')
+   --profile eks-admin | jq -r '.[]' | sed 's/{//;s/}//;s/"//g;s/ AWS_ACCESS_KEY_ID: /export AWS_ACCESS_KEY_ID=/;s/ AWS_SESSION_TOKEN: /export AWS_SESSION_TOKEN=/;s/ AWS_SECRET_ACCESS_KEY: /export AWS_SECRET_ACCESS_KEY=/')
 echo $creds
 ```
 ```
-eval ${creds}
+eval $creds
 ```
 ```
 aws sts get-caller-identity
@@ -176,8 +176,12 @@ aws sts get-caller-identity
     "Account": "xxxxxxxxxxxx",
     "Arn": "arn:aws:sts::xxxxxxxxxxxx:assumed-role/EKSClusterCreator/create-eks-cluster"
 }
+
 ```
-* (Optional) AWS_PROFILE
+---
+
+* (Optional)
+* AWS_PROFILE
 ```
 export AWS_PROFILE=k8sAdmin
 echo ${AWS_PROFILE}
