@@ -103,7 +103,6 @@ aws sts get-caller-identity
                 "iam:*",
                 "cloudformation:*",
                 "ec2:*",
-                "vpc:*",
                 "autoscaling:*",
                 "ssm:*",
                 "kms:*",
