@@ -51,6 +51,11 @@ aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subne
 
 * ClusterConfig
 * https://eksctl.io/usage/schema/
+>privateCluster
+
+>skipEndpointCreation
+
+>securityGroup
 ```
 cat << EOF > cluster-payments.yaml
 apiVersion: eksctl.io/v1alpha5
