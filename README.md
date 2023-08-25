@@ -159,6 +159,10 @@ done
 
 ```
 
+```
+aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[ServiceName,State]' --output text
+```
+
 
 # Creating an Amazon EKS cluster
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/create-cluster.html
