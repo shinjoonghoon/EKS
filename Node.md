@@ -61,5 +61,17 @@ vpc:
 EOF
 
 ```
->Error: operation error EC2: DescribeSubnets, https response error StatusCode: 403, RequestID: xxx, api error UnauthorizedOperation: You are not authorized to perform this operation.
->
+
+* assume-role: EKSClusterCreator
+```
+kubectl config use-context create-eks-cluster@payments.ap-northeast-2.eksctl.io
+```
+
+```
+eksctl create nodegroup -f managed-node-group-payments.yaml
+```
+
+```
+kubectl get nodes
+```
+
