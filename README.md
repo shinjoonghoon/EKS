@@ -7,4 +7,3 @@
 1. Node
 1. Docker
 1. Deployment
-1. LB-Controller
