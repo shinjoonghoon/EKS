@@ -54,6 +54,7 @@ aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap
 ```
 
 * s3 vpc endpoint of type gateway
+ >>602401143452.dkr.ecr.ap-northeast-2.amazonaws.com/eks/coredns:v1.10.1-eksbuild.1
 ```
 aws ec2 create-vpc-endpoint \
     --region $region \
