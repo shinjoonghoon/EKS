@@ -29,7 +29,7 @@ aws ec2 authorize-security-group-ingress \
     --port 443 \
     --cidr 10.0.0.0/8 \
     --output json | jq '.[]'
-
+```
 
 
 # Creating an Amazon EKS cluster
