@@ -3,6 +3,8 @@ aws eks list-clusters --profile eks-admin
 ```
 
 ```
-eksctl get cluster --region ap-northeast-2
+eksctl get cluster --region ap-northeast-2 --profile eks-admin
 ```
->cloudformation:ListStacks
+>AccessDenied: cloudformation:ListStacks
+
+>refresh sso token
