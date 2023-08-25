@@ -59,6 +59,9 @@ echo $region
 
 ```
 
+region: 1)Command line --profile option, 2)Value of AWS_PROFILE environment variable, 3)Otherwise profile is [default]
+
+
 # Create VPC endpoint
 > Your cluster's VPC subnets must have a VPC interface endpoint for any AWS services that your Pods need access to. For more information, see Access an AWS service using an interface VPC endpoint. Some commonly-used services and endpoints are listed in the following table. For a complete list of endpoints, see AWS services that integrate with AWS PrivateLink in the AWS PrivateLink Guide.
 * https://docs.aws.amazon.com/eks/latest/userguide/private-clusters.html
@@ -94,6 +97,11 @@ echo $sbs
 rts=$(aws ec2 describe-route-tables   --filters "Name=vpc-id,Values=$vpcid" "Name=tag:Endpoints,Values=true" --region ap-northeast-2 --query 'RouteTables[].RouteTableId' --output text)
 echo $rts
 
+```
+
+* describe-vpc-endpoints
+```
+aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,ServiceName]' --output text
 ```
 
 * s3 vpc endpoint of type gateway
