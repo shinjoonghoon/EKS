@@ -90,3 +90,54 @@ eksctl create cluster -f cluster-payments.yaml
 ```
 kubectl config view
 ```
+
+```
+ssorole=$(aws sts get-caller-identity --query Arn --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx | cut -d/ -f2)
+account=$(aws sts get-caller-identity --query Account --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx)
+cluster=$(aws eks list-clusters --query clusters --output text)
+echo $ssorole
+echo $account
+echo $cluster
+```
+
+```
+eksctl create iamidentitymapping \
+ --cluster ${cluster} \
+ --arn arn:aws:iam::${account}:role/${ssorole} \
+ --username cluster-admin \
+ --group system:masters
+ --region ap-northeast-2
+
+```
+
+```
+kubectl get cm -n kube-system aws-auth -o yaml
+```
+
+```
+export KUBECONFIG=~/.kube/config-ekssso-EKSClusterAdmin 
+
+```
+
+```
+aws eks update-kubeconfig --name ${cluster} \
+ --profile EKSClusterAdminAccess-xxxxxxxxxxxx
+```
+
+```
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+
+```
+
+```
+kubectl get nodes
+
+```
+
+* delete cluster
+>assume-role: EKSClusterCreator
+```
+eksctl delete cluster --name payments --region ap-northeast-2
+```
+
+
