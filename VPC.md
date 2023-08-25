@@ -49,6 +49,9 @@ source ~/.bashrc
 
 ```
 
+# Create a VPC
+
+
 # Create VPC endpoint
 > Your cluster's VPC subnets must have a VPC interface endpoint for any AWS services that your Pods need access to. For more information, see Access an AWS service using an interface VPC endpoint. Some commonly-used services and endpoints are listed in the following table. For a complete list of endpoints, see AWS services that integrate with AWS PrivateLink in the AWS PrivateLink Guide.
 * https://docs.aws.amazon.com/eks/latest/userguide/private-clusters.html
