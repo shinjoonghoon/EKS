@@ -75,3 +75,14 @@ eksctl create nodegroup -f managed-node-group-payments.yaml
 kubectl get nodes
 ```
 
+```
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+```
+
+```
+kubectl config use-context arn:aws:eks:ap-northeast-2:$account:cluster/payments
+```
+
+```
+kubectl get nodes
+```
