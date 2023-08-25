@@ -119,7 +119,7 @@ aws sts get-caller-identity
 aws configure sso
 ```
 ```
-SSO session name (Recommended): sso-eks-admin
+SSO session name (Recommended): sso1
 SSO start URL [None]: https://d-xxxxxx.awsapps.com/start
 SSO region [None]: ap-northeast-2
 SSO registration scopes [sso:account:access]: sso:account:access
