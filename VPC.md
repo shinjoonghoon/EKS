@@ -4,10 +4,11 @@
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/install-kubectl.html
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/eksctl.html
 
+* jq
 ```
 sudo yum install jq
 ```
-
+* AWS CLI
 ```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -18,7 +19,7 @@ echo "complete -C '/usr/local/bin/aws_completer' aws" >> ~/.bash_profile
 source ~/.bashrc
 
 ```
-
+* kubectl
 ```
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/linux/amd64/kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
@@ -26,7 +27,7 @@ sudo chmod +x /usr/local/bin/kubectl
 kubectl version
 
 ```
-
+* eksctl
 ```
 ARCH=amd64
 PLATFORM=$(uname -s)_$ARCH
@@ -36,7 +37,7 @@ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo mv /tmp/eksctl /usr/local/bin
 
 ```
-
+* autocomplete
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo "source <(eksctl completion bash)" >> ~/.bashrc
@@ -44,37 +45,7 @@ source ~/.bashrc
 
 ```
 
-# Security group of cluster
-* https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html
-* https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/sec-group-reqs.html
 
-```
-vpcid=vpc-0e5dcdc77bf5fcc86
-region=$(aws configure get region  )
-echo $vpcid
-echo $region
-
-```
-
-```
-aws ec2 create-security-group --description "Security group of Payments Cluster" --group-name "eks-cluster-sg-payments" --vpc-id $vpcid --output json | jq '.[]'
-```
-
-```
-aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
-    --protocol -1 --port -1 \
-    --source-group $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
-    --output json | jq '.[]'
-```
-
-```
-aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
-    --protocol tcp \
-    --port 443 \
-    --cidr 10.0.0.0/8 \
-    --output json | jq '.[]'
 ```
 # Security group of endpoints
 ```
