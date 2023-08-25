@@ -4,7 +4,7 @@ Parameters:
   EnvironmentName:
     Description: 1 VPC, 3 Private subnets in two AZ
     Type: String
-    Default: "eks-private-cluster"
+    Default: "eks-private-cluster-vpc"
 
 Mappings:
   SubnetConfig:
