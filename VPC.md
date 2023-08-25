@@ -78,6 +78,8 @@ aws ec2 authorize-security-group-ingress \
     --output json | jq '.[]'
 
 ```
+* Tag VPC subnets
+>Name=tag:Endpoints,Values=true
 
 * describe-subnets
 ```
