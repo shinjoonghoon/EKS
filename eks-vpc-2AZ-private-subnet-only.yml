@@ -1,0 +1,208 @@
+Description:  This template deploys a VPC for Fully private cluster
+
+Parameters:
+  EnvironmentName:
+    Description: 1 VPC, 3 Private subnets in two AZ
+    Type: String
+    Default: "eks-private-cluster"
+
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: "10.192.0.0/16"
+
+    PrivateSubnet1CIDR:
+      CIDR: "10.192.1.0/24"
+
+    PrivateSubnet2CIDR:
+      CIDR: "10.192.2.0/24"
+
+    PrivateSubnet3CIDR:
+      CIDR: "10.192.3.0/24"
+
+    PrivateSubnet4CIDR:
+      CIDR: "10.192.4.0/24"
+
+    PrivateSubnet5CIDR:
+      CIDR: "10.192.5.0/24"
+
+    PrivateSubnet6CIDR:
+      CIDR: "10.192.6.0/24"
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock:
+          Fn::FindInMap:
+            - "SubnetConfig"
+            - "VPC"
+            - "CIDR"
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet1CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 1 (AZ1)
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet2CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 2 (AZ1)
+
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet3CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 3 (AZ1)
+        - Key: Endpoints
+          Value: true
+
+  PrivateSubnet4:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 2, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet4CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 4 (AZ3)
+
+  PrivateSubnet5:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 2, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet5CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 5 (AZ3)
+
+  PrivateSubnet6:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      AvailabilityZone: !Select [ 2, !GetAZs  '' ]
+      CidrBlock:
+        Fn::FindInMap:
+          - "SubnetConfig"
+          - "PrivateSubnet6CIDR"
+          - "CIDR"
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Subnet 6 (AZ3)
+        - Key: Endpoints
+          Value: true
+
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+        - Key: "Endpoints"
+          Value: "true"
+
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: "VPC"
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Private Routes (AZ3)
+        - Key: Endpoints
+          Value: true
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet1
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet2
+
+  PrivateSubnet3RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet3
+
+  PrivateSubnet4RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet4
+
+  PrivateSubnet5RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet5
+
+  PrivateSubnet6RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet6
+
+Outputs:
+  VPC:
+    Description: A reference to the created VPC
+    Value: !Ref VPC
