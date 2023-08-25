@@ -49,8 +49,12 @@ source ~/.bashrc
 
 ```
 
-# Security group of endpoints
+# Create VPC endpoint
+> Your cluster's VPC subnets must have a VPC interface endpoint for any AWS services that your Pods need access to. For more information, see Access an AWS service using an interface VPC endpoint. Some commonly-used services and endpoints are listed in the following table. For a complete list of endpoints, see AWS services that integrate with AWS PrivateLink in the AWS PrivateLink Guide.
+* https://docs.aws.amazon.com/eks/latest/userguide/private-clusters.html
 * https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html
+* https://docs.aws.amazon.com/vpc/latest/privatelink/interface-endpoints.html
+
 * create-security-group
 ```
 aws ec2 create-security-group --description "Security group of endpoints" --group-name "Security group of endpoints" --vpc-id $vpcid --output json   | jq '.[]'
@@ -110,8 +114,7 @@ done
 
 ```
 
-* VPC interface endpoint for any AWS services that Pods need access to
-* https://docs.aws.amazon.com/eks/latest/userguide/private-clusters.html
+* AWS services
 ```
 myarray=(
 com.amazonaws.$region.appmesh-envoy-management
