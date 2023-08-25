@@ -4,7 +4,7 @@
 
 ```
 vpcid=vpc-xxxxxxxxxxxxxxxxx
-region=$(aws configure get region)
+region=$(aws configure get region --profile eks-admin)
 echo $vpcid
 echo $region
 
@@ -63,14 +63,13 @@ privateCluster:
   enabled: true
   skipEndpointCreation: true
 vpc:
-#eks-cluster-sg-[Cluster Name]
-  securityGroup: sg-0eb70e4b38716fba7
+  securityGroup: <>
   subnets:
     private:
       EKS-subnet-private2-ap-northeast-2a:
-        id: "subnet-00936ff6a3197cfaf"
+        id: <>
       EKS-subnet-private5-ap-northeast-2c:
-        id: "subnet-0be3341072b0df062"
+        id: <>
 EOF
 
 ```
@@ -92,8 +91,8 @@ kubectl config view
 ```
 
 ```
-ssorole=$(aws sts get-caller-identity --query Arn --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx | cut -d/ -f2)
-account=$(aws sts get-caller-identity --query Account --output text --profile EKSClusterAdminAccess-xxxxxxxxxxxx)
+ssorole=$(aws sts get-caller-identity --query Arn --output text --profile eks-admin | cut -d/ -f2)
+account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
 cluster=$(aws eks list-clusters --query clusters --output text)
 echo $ssorole
 echo $account
@@ -121,7 +120,7 @@ export KUBECONFIG=~/.kube/config-ekssso-EKSClusterAdmin
 
 ```
 aws eks update-kubeconfig --name ${cluster} \
- --profile EKSClusterAdminAccess-xxxxxxxxxxxx
+ --profile eks-admin
 ```
 
 ```
