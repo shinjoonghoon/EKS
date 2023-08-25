@@ -61,7 +61,7 @@ aws ec2 create-security-group --description "Security group of endpoints" --grou
 ```
 aws ec2 authorize-security-group-ingress \
     --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text  ) \
-    --protocol -1 --port -1 --cidr 0.0.0.0/0 \
+    --protocol -1 --port -1 --cidr 10.0.0.0/8 \
     --output json | jq '.[]'
 
 ```
