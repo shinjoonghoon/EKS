@@ -1,3 +1,4 @@
+* re-login
 ```
 account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
 rolearn="arn:aws:iam::${account}:role/EKSClusterCreator"
@@ -15,7 +16,8 @@ eval $creds
 aws sts get-caller-identity
 
 ```
-
+* unset
+* https://repost.aws/ko/knowledge-center/iam-assume-role-cli
 ```
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 ```
