@@ -39,7 +39,7 @@ EOF
 ```
 
 ```
-sed -i 's/111122223333/$account/g' ./load-balancer-role-trust-policy.json 
+sed -i "s/111122223333/$account/g" ./load-balancer-role-trust-policy.json 
 sed -i 's/region\-code/ap\-northeast\-2/g' ./load-balancer-role-trust-policy.json
 sed -i "s/EXAMPLED539D4633E53DE1B71EXAMPLE/$oidc_id/g" ./load-balancer-role-trust-policy.json
 ```
