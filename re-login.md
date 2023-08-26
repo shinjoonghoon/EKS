@@ -22,3 +22,13 @@ aws sts get-caller-identity
 ```
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 ```
+
+* update-kubeconfig
+```
+aws eks update-kubeconfig --name ${cluster} \
+ --profile eks-admin
+```
+* sso login
+```
+aws sso login --profile eks-admin
+```
