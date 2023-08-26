@@ -56,3 +56,6 @@ kubectl create -f ngx-nlb.yaml
 ```
 watch kubectl get svc ngx1
 ```
+```
+kubectl describe svc ngx1
+```
