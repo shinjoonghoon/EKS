@@ -1,3 +1,8 @@
+* sso (eks-admin)
+```
+aws sso login --profile eks-admin
+```
+
 * re-login
 ```
 account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
