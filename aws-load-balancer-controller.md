@@ -1,8 +1,6 @@
+# Create a service account
 * https://kubernetes-sigs.github.io/aws-load-balancer-controller/
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/aws-load-balancer-controller.html
----
-
-# create a service account
 * AmazonEKSLoadBalancerControllerRole-$cluster: policy
 ```
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.7/docs/install/iam_policy.json
