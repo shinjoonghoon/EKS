@@ -1,3 +1,5 @@
+# Creating a managed node group
+* https://docs.aws.amazon.com/eks/latest/userguide/create-managed-node-group.html
 ```
 aws eks list-clusters --profile eks-admin
 ```
@@ -9,6 +11,7 @@ eksctl get cluster --region ap-northeast-2 --profile eks-admin
 
 >refresh sso token
 
+# Create Amazon EKS node role
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/create-node-role.html
 * AmazonEKSNodeRole
 ```
@@ -31,6 +34,7 @@ eksctl get cluster --region ap-northeast-2 --profile eks-admin
 
 >AmazonEKS_CNI_Policy
 
+# YAML
 ```
 cat << EOF > managed-node-group-payments.yaml
 apiVersion: eksctl.io/v1alpha5
