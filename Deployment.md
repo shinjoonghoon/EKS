@@ -1,3 +1,4 @@
+# Busybox
 ```
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 ```
@@ -36,6 +37,8 @@ kubectl config current-context
 ```
 kubectl create -f bb8.yaml
 ```
+
+# Nginx
 ```
 cat << EOF > ngx.yaml
 apiVersion: apps/v1
@@ -77,6 +80,7 @@ spec:
 EOF
 
 ```
+
 ```
 kubectl create -f ngx.yaml
 ```
@@ -85,6 +89,7 @@ kubectl create -f ngx.yaml
 kubectl get all -A -o wide
 ```
 
+# DNS test
 ```
 kubectl exec -it bb8-7f64d856f8-2755b -- sh
 ```
