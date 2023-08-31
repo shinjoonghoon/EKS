@@ -1,5 +1,7 @@
 
 # Create a VPC
+Using [YAML](https://github.com/shinjoonghoon/eks-basic/blob/main/eks-vpc-2AZ-private-subnet-only.yml).
+
 >a) region: 1)Command line --profile option, 2)Value of AWS_PROFILE environment variable, 3)Otherwise profile is [default]
 
 >b) configure transit gateway route table
