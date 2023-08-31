@@ -1,4 +1,5 @@
-
+# Network load balancing on Amazon EKS
+* https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
 ```
 echo $vpcid
 aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text
