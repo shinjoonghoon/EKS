@@ -1,15 +1,15 @@
 
 # Create a VPC
+>a) region: 1)Command line --profile option, 2)Value of AWS_PROFILE environment variable, 3)Otherwise profile is [default]
+
+>b) configure transit gateway route table
 ```
 vpcid=vpc-xxxxxxxxxxxxxxxxx
 region=$(aws configure get region --profile eks-admin)
 echo $vpcid
 echo $region
-
 ```
->a) region: 1)Command line --profile option, 2)Value of AWS_PROFILE environment variable, 3)Otherwise profile is [default]
 
->b) configure transit gateway route table
 
 # Create VPC endpoint
 > Your cluster's VPC subnets must have a VPC interface endpoint for any AWS services that your Pods need access to. For more information, see Access an AWS service using an interface VPC endpoint. Some commonly-used services and endpoints are listed in the following table. For a complete list of endpoints, see AWS services that integrate with AWS PrivateLink in the AWS PrivateLink Guide.
@@ -53,8 +53,8 @@ echo $rts
 aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,ServiceName]' --output text
 ```
 
-* s3 vpc endpoint of type gateway
- >>602401143452.dkr.ecr.ap-northeast-2.amazonaws.com/eks/coredns:v1.10.1-eksbuild.1
+* s3 vpc endpoint of type **gateway**
+>602401143452.dkr.ecr.ap-northeast-2.amazonaws.com/eks/coredns:v1.10.1-eksbuild.1
 ```
 aws ec2 create-vpc-endpoint \
     --region $region \
@@ -66,7 +66,7 @@ aws ec2 create-vpc-endpoint \
 
 ```
 
-* s3 vpc endpoint of type interface
+* s3 vpc endpoint of type **interface**
 ```
 myarray=(
 com.amazonaws.$region.s3
@@ -115,7 +115,7 @@ done
 
 ```
 
-* describe-vpc-endpoints
+# Describe VPC endpoints
 ```
 aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,ServiceName]' --output text
 ```
