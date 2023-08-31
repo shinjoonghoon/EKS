@@ -101,6 +101,8 @@ aws sts get-caller-identity
 eksctl get cluster --region ap-northeast-2
 ```
 
+# Manage IAM users and roles
+* https://eksctl.io/usage/iam-identity-mappings/
 ```
 ssorole=$(aws sts get-caller-identity --query Arn --output text --profile eks-admin | cut -d/ -f2)
 account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
@@ -144,14 +146,13 @@ kubectl get nodes
 
 ```
 
-* delete cluster
+# Delete cluster
 >assume-role: EKSClusterCreator
 ```
 eksctl delete cluster --name payments --region ap-northeast-2
 ```
 
----
-
+# (Optional) KUBECONFIG
 ```
 export KUBECONFIG=~/.kube/config-ekssso-EKSClusterAdmin 
 
