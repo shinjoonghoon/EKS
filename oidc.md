@@ -1,9 +1,11 @@
+# Creating an IAM OIDC provider for cluster
+* https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
 ```
 cluster=payments
 oidc_id=$(aws eks describe-cluster --name $cluster --query "cluster.identity.oidc.issuer" --profile eks-admin --output text | cut -d '/' -f 5)
 echo $oidc_id
 ```
-assume-role: EKSClusterCreator
+* assume-role: EKSClusterCreator
 ```
 aws iam list-open-id-connect-providers | grep $oidc_id | cut -d "/" -f4
 ```
