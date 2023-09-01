@@ -175,7 +175,7 @@ aws sts get-caller-identity
 {
     "UserId": "AROAxxxxxxxxxxxxxxxxx:eks-cluster-creator",
     "Account": "xxxxxxxxxxxx",
-    "Arn": "arn:aws:sts::933064879733:assumed-role/EKSClusterCreator/eks-cluster-creator"
+    "Arn": "arn:aws:sts::xxxxxxxxxxxx:assumed-role/EKSClusterCreator/eks-cluster-creator"
 }
 
 ```
