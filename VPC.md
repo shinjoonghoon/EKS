@@ -7,7 +7,9 @@ Using [YAML](https://github.com/shinjoonghoon/eks-basic/blob/main/eks-vpc-2AZ-pr
 >b) configure transit gateway route table
 ```
 vpcid=vpc-xxxxxxxxxxxxxxxxx
-region=$(aws configure get region --profile eks-admin)
+```
+```
+region=$(aws configure get region --profile eksadmin)
 echo $vpcid
 echo $region
 ```
@@ -19,17 +21,17 @@ echo $region
 * https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html
 * https://docs.aws.amazon.com/vpc/latest/privatelink/interface-endpoints.html
 
-* create-security-group
+# create-security-group
 ```
-aws ec2 create-security-group --description "Security group of endpoints" --group-name "Security group of endpoints" --vpc-id $vpcid --output json   | jq '.[]'
-
+aws ec2 create-security-group --description "Security group of endpoints" --group-name "Security group of endpoints" --vpc-id $vpcid --output json --region $region  | jq '.[]'
 ```
 
 * authorize-security-group-ingress
 ```
 aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text  ) \
+    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text --region $region ) \
     --protocol -1 --port -1 --cidr 10.0.0.0/8 \
+    --region $region
     --output json | jq '.[]'
 
 ```
@@ -55,7 +57,7 @@ echo $rts
 aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,ServiceName]' --output text
 ```
 
-* s3 vpc endpoint of type **gateway**
+# s3 vpc endpoint of type **gateway**
 >602401143452.dkr.ecr.ap-northeast-2.amazonaws.com/eks/coredns:v1.10.1-eksbuild.1
 ```
 aws ec2 create-vpc-endpoint \
@@ -68,7 +70,7 @@ aws ec2 create-vpc-endpoint \
 
 ```
 
-* s3 vpc endpoint of type **interface**
+# s3 vpc endpoint of type **interface**
 ```
 myarray=(
 com.amazonaws.$region.s3
@@ -77,16 +79,16 @@ for v in "${myarray[@]}"; do
     aws ec2 create-vpc-endpoint \
     --region $region \
     --vpc-id  $vpcid \
-    --subnet-ids $sbs \
+    --subnet-ids $(aws ec2 describe-subnets   --filters "Name=vpc-id,Values=$vpcid" "Name=tag:Endpoints,Values=true" --region ap-northeast-2 --query 'Subnets[].SubnetId' --output text) \
     --vpc-endpoint-type Interface \
     --service-name  $v \
-    --security-group-ids $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text  ) \
+    --security-group-ids $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text --region $region ) \
     --output json | jq '.[]'
 done
 
 ```
 
-* AWS services
+# AWS services
 ```
 myarray=(
 com.amazonaws.$region.appmesh-envoy-management
@@ -108,10 +110,10 @@ for v in "${myarray[@]}"; do
     aws ec2 create-vpc-endpoint \
     --region $region \
     --vpc-id  $vpcid \
-    --subnet-ids $sbs \
+    --subnet-ids $(aws ec2 describe-subnets   --filters "Name=vpc-id,Values=$vpcid" "Name=tag:Endpoints,Values=true" --region ap-northeast-2 --query 'Subnets[].SubnetId' --output text) \
     --vpc-endpoint-type Interface \
     --service-name  $v \
-    --security-group-ids $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text  ) \
+    --security-group-ids $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`Security group of endpoints`)].GroupId' --output text --region $region ) \
     --output json | jq '.[]'
 done
 
