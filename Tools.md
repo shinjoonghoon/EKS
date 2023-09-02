@@ -34,6 +34,8 @@ sudo mv /tmp/eksctl /usr/local/bin
 ```
 
 # autocomplete
+* https://eksctl.io/introduction/#shell-completion
+* https://kubernetes.io/ko/docs/tasks/tools/included/optional-kubectl-configs-zsh/
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo "source <(eksctl completion bash)" >> ~/.bashrc
