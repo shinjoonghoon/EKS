@@ -64,7 +64,7 @@ aws ec2 create-vpc-endpoint \
     --region $region \
     --vpc-endpoint-type Gateway \
     --vpc-id  $vpcid \
-    --route-table-ids $rts \
+    --route-table-ids $(aws ec2 describe-route-tables   --filters "Name=vpc-id,Values=$vpcid" "Name=tag:Endpoints,Values=true" --region ap-northeast-2 --query 'RouteTables[].RouteTableId' --output text) \
     --service-name com.amazonaws.$region.s3 \
     --output json | jq '.[]'
 
