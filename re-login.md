@@ -9,7 +9,8 @@ account=$(aws sts get-caller-identity --query Account --output text --profile ek
 rolearn="arn:aws:iam::${account}:role/EKSClusterCreator"
 echo $account
 echo $rolearn
-
+```
+```
 creds=$(aws sts assume-role --role-arn ${rolearn} \
    --role-session-name "eks-cluster-creator" \
    --query 'Credentials.[{AWS_ACCESS_KEY_ID: AccessKeyId}, {AWS_SESSION_TOKEN: SessionToken}, {AWS_SECRET_ACCESS_KEY: SecretAccessKey}]' \
