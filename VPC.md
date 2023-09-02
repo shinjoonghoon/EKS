@@ -121,6 +121,6 @@ done
 
 # Describe VPC endpoints
 ```
-aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,ServiceName]' --output text
+aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpcid" --region ap-northeast-2 --query 'VpcEndpoints[].[State,VpcEndpointType,ServiceName]' --output text
 ```
 
