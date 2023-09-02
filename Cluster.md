@@ -4,14 +4,16 @@
 
 ```
 vpcid=vpc-xxxxxxxxxxxxxxxxx
-region=$(aws configure get region --profile eks-admin)
+```
+```
+region=$(aws configure get region --profile eksadmin)
 echo $vpcid
 echo $region
 
 ```
 * create-security-group
 ```
-aws ec2 create-security-group --description "Security group of Payments Cluster" --group-name "eks-cluster-sg-payments" --vpc-id $vpcid --output json | jq '.[]'
+aws ec2 create-security-group --description "Security group of Payments Cluster" --group-name "eks-cluster-sg-payments" --vpc-id $vpcid --output json --region $region | jq '.[]'
 
 ```
 
@@ -19,9 +21,10 @@ aws ec2 create-security-group --description "Security group of Payments Cluster"
 >source-group
 ```
 aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
+    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text --region $region ) \
     --protocol -1 --port -1 \
-    --source-group $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
+    --source-group $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text --region $region ) \
+    --region $region \
     --output json | jq '.[]'
 
 ```
@@ -29,10 +32,11 @@ aws ec2 authorize-security-group-ingress \
 >cidr 10.0.0.0/8
 ```
 aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text  ) \
+    --group-id $(aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text --region $region  ) \
     --protocol tcp \
     --port 443 \
     --cidr 10.0.0.0/8 \
+    --region $region \
     --output json | jq '.[]'
 
 ```
@@ -41,12 +45,12 @@ aws ec2 authorize-security-group-ingress \
 * https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/create-cluster.html
 * describe-security-groups
 ```
-aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text
+aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text --region $region
 ```
 
 * describe-subnets
 ```
-aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text
+aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text --region $region
 ```
 
 * ClusterConfig
@@ -104,8 +108,8 @@ eksctl get cluster --region ap-northeast-2
 # Manage IAM users and roles
 * https://eksctl.io/usage/iam-identity-mappings/
 ```
-ssorole=$(aws sts get-caller-identity --query Arn --output text --profile eks-admin | cut -d/ -f2)
-account=$(aws sts get-caller-identity --query Account --output text --profile eks-admin)
+ssorole=$(aws sts get-caller-identity --query Arn --output text --profile eksadmin | cut -d/ -f2)
+account=$(aws sts get-caller-identity --query Account --output text --profile eksadmin)
 cluster=$(aws eks list-clusters --query clusters --output text)
 echo $ssorole
 echo $account
@@ -137,7 +141,7 @@ unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
 ```
 aws eks update-kubeconfig --name ${cluster} \
- --profile eks-admin
+ --profile eksadmin
 ```
 >AccessDeniedException: eks:DescribeCluster
 
