@@ -5,7 +5,7 @@
 * SSO Group: EKSAdmins
 * SSO User: eksadmin
 * IAM Identity Center(SSO)/Permission sets/EKSAdminAccess/inline policy
->EKSClusterAdminAccess
+>Permission set name: `EKSAdminAccess`
 ```
 {
     "Version": "2012-10-17",
@@ -73,7 +73,7 @@
 # Create IAM EKSClusterCreator role
 >When you create an EKS cluster, the user or role you use will inherit cluster administrator permissions. This identity principal retains cluster admin permissions for the life of the cluster and should be kept secure. It is best practice to create additional roles to delegate routine operational tasks while keeping the cluster creator role separate and secure. If you forget the name of that principal, it can be retrieved or changed by AWS Support for a limited time, or you can recreate the IAM principal if you remember the user or role name.
 * IAM/Roles/EKSClusterCreator
->EKSClusterCreator
+>`EKSClusterCreator`
 ```
 {
     "Version": "2012-10-17",
@@ -91,7 +91,7 @@
     ]
 }
 ```
-* IAM/Roles/EKSClusterCreator/EKSClusterCreatorPolicy
+>`EKSClusterCreatorPolicy`
 ```
 {
     "Version": "2012-10-17",
@@ -114,12 +114,12 @@
     ]
 }
 ```
-* sso login
+# SSO Login
 ```
 aws configure sso
 ```
 ```
-SSO session name (Recommended): session-name
+SSO session name (Recommended): eksadmin
 SSO start URL [None]: https://d-xxxxxx.awsapps.com/start
 SSO region [None]: ap-northeast-2
 SSO registration scopes [sso:account:access]: sso:account:access
