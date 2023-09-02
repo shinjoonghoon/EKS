@@ -1,8 +1,5 @@
 # EKS using SSO
-* get-caller-identity
-```
-aws sts get-caller-identity
-```
+* https://aws.amazon.com/blogs/containers/a-quick-path-to-amazon-eks-single-sign-on-using-aws-sso/
 
 # AWS Organizations - Management account
 * SSO Group: EKSAdmins
@@ -73,6 +70,8 @@ aws sts get-caller-identity
 }
 ```
 
+# Create IAM EKSClusterCreator role
+>When you create an EKS cluster, the user or role you use will inherit cluster administrator permissions. This identity principal retains cluster admin permissions for the life of the cluster and should be kept secure. It is best practice to create additional roles to delegate routine operational tasks while keeping the cluster creator role separate and secure. If you forget the name of that principal, it can be retrieved or changed by AWS Support for a limited time, or you can recreate the IAM principal if you remember the user or role name.
 * IAM/Roles/EKSClusterCreator
 >EKSClusterCreator
 ```
