@@ -46,11 +46,13 @@ aws ec2 authorize-security-group-ingress \
 * describe-security-groups
 ```
 aws ec2 describe-security-groups --query 'SecurityGroups[?(VpcId==`'$vpcid'` && GroupName==`eks-cluster-sg-payments`)].GroupId' --output text --region $region
+
 ```
 
 * describe-subnets
 ```
 aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcid"   --query "Subnets[*].{id:SubnetId,az:AvailabilityZone,subnet:Tags[?Key=='Name']|[0].Value}" --output text --region $region
+
 ```
 
 * ClusterConfig
