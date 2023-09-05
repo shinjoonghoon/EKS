@@ -5,11 +5,16 @@
 ```
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.7/docs/install/iam_policy.json
 ```
+>--cacert
+```
+curl --cacert squid.pem -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.7/docs/install/iam_policy.json
+```
 ```
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
 ```
+
 
 * AmazonEKSLoadBalancerControllerRole-$cluster: trust relationship
 ```
@@ -35,7 +40,10 @@ cat >load-balancer-role-trust-policy.json <<EOF
 EOF
 
 ```
-
+```
+echo $account
+echo $oidc_id
+```
 ```
 sed -i "s/111122223333/$account/g" ./load-balancer-role-trust-policy.json 
 sed -i 's/region\-code/ap\-northeast\-2/g' ./load-balancer-role-trust-policy.json
