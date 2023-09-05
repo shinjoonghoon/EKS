@@ -116,10 +116,12 @@ cluster=$(aws eks list-clusters --query clusters --output text)
 echo $ssorole
 echo $account
 echo $cluster
+
 ```
 
 ```
 kubectl get cm -n kube-system aws-auth -o yaml
+
 ```
 
 ```
