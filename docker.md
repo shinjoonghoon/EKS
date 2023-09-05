@@ -6,11 +6,6 @@ sudo yum install docker.x86_64 -y
 ```
 
 ```
-docker pull busybox
-docker pull nginx
-```
-
-```
 sudo service docker status
 ```
 
