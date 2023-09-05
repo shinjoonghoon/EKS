@@ -43,15 +43,18 @@ aws ecr create-repository --region ap-northeast-2 --repository-name nginx
 
 ```
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $account.dkr.ecr.ap-northeast-2.amazonaws.com
+
 ```
 
 ```
 docker tag busybox:latest $account.dkr.ecr.ap-northeast-2.amazonaws.com/busybox:latest
 docker tag nginx:latest $account.dkr.ecr.ap-northeast-2.amazonaws.com/nginx:latest
+
 ```
 ```
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/busybox:latest
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/nginx:latest
+
 ```
 
 ---
@@ -79,6 +82,7 @@ aws ecr create-repository --region ap-northeast-2 --repository-name quay.io/jets
 aws ecr create-repository --region ap-northeast-2 --repository-name quay.io/jetstack/cert-manager-controller
 aws ecr create-repository --region ap-northeast-2 --repository-name quay.io/jetstack/cert-manager-webhook
 aws ecr create-repository --region ap-northeast-2 --repository-name eks/aws-load-balancer-controller
+
 ```
 
 ```
@@ -91,11 +95,13 @@ docker tag quay.io/jetstack/cert-manager-cainjector:v1.5.4 $account.dkr.ecr.ap-n
 docker tag quay.io/jetstack/cert-manager-controller:v1.5.4 $account.dkr.ecr.ap-northeast-2.amazonaws.com/quay.io/jetstack/cert-manager-controller:v1.5.4
 docker tag quay.io/jetstack/cert-manager-webhook:v1.5.4 $account.dkr.ecr.ap-northeast-2.amazonaws.com/quay.io/jetstack/cert-manager-webhook:v1.5.4
 docker tag public.ecr.aws/eks/aws-load-balancer-controller:v2.4.7 $account.dkr.ecr.ap-northeast-2.amazonaws.com/eks/aws-load-balancer-controller:v2.4.7
+
 ```
 ```
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/quay.io/jetstack/cert-manager-cainjector:v1.5.4
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/quay.io/jetstack/cert-manager-controller:v1.5.4
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/quay.io/jetstack/cert-manager-webhook:v1.5.4
 docker push $account.dkr.ecr.ap-northeast-2.amazonaws.com/eks/aws-load-balancer-controller:v2.4.7
+
 ```
 
