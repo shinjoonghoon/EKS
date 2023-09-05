@@ -15,6 +15,7 @@
 
 
 1. re-login
+1. proxy-env
 
 ---
 
