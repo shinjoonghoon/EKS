@@ -36,7 +36,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-0aa02b8424ab77883, subnet-05412c45573ba1763
+    service.beta.kubernetes.io/aws-load-balancer-subnets: <>, <>
   labels:
     run: ngx1
   name: ngx1
