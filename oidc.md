@@ -2,7 +2,7 @@
 * https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
 ```
 cluster=payments
-oidc_id=$(aws eks describe-cluster --name $cluster --query "cluster.identity.oidc.issuer" --profile eks-admin --output text | cut -d '/' -f 5)
+oidc_id=$(aws eks describe-cluster --name $cluster --query "cluster.identity.oidc.issuer" --profile eksadmin --output text | cut -d '/' -f 5)
 echo $oidc_id
 ```
 * assume-role: EKSClusterCreator
