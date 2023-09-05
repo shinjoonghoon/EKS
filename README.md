@@ -16,6 +16,7 @@
 
 1. re-login
 1. proxy-env
+1. iam-identity-mappings
 
 ---
 
