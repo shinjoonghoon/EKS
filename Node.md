@@ -1,11 +1,11 @@
 # Creating a managed node group
 * https://docs.aws.amazon.com/eks/latest/userguide/create-managed-node-group.html
 ```
-aws eks list-clusters --profile eks-admin
+aws eks list-clusters --profile eksadmin
 ```
 
 ```
-eksctl get cluster --region ap-northeast-2 --profile eks-admin
+eksctl get cluster --region ap-northeast-2 --profile eksadmin
 ```
 >AccessDenied: cloudformation:ListStacks
 
